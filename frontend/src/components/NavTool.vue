@@ -1,6 +1,5 @@
 <template>
-  <div id="app">
-    <nav class="navbar navbar-inverse">
+  <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -11,11 +10,9 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active">
-                  <router-link to="/articles" class="">文章列表</router-link>
+                  <router-link to="/1" class="">文章列表</router-link>
                 </li>
-                <li>
-                  <router-link to="/2" class="">个人中心</router-link>
-                </li>
+                <li><router-link to="/2" class="">个人中心</router-link></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <!--{% if request.user.username %}-->
@@ -40,19 +37,22 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-
-    <router-view/>
-  </div>
 </template>
 
 <script>
+
 export default {
-  name: 'App'
+  name: 'NavTool',
+  data () {
+    return {
+      msg: ''
+    }
+  }
 }
 </script>
 
-<style>
-body {
-  background: #f5f4d6;
-}
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+
 </style>
