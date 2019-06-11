@@ -10,11 +10,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active">
+                <li class="">
                   <router-link to="/articles" class="">文章列表</router-link>
-                </li>
-                <li>
-                  <router-link to="/2" class="">个人中心</router-link>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

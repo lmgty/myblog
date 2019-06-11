@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Article from '@/components/Article'
 import Detail from '@/components/Detail'
+import Tag from '@/components/Tag'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/articles/:id',
       name: 'detail',
       component: Detail
+    },
+        {
+      path: '/tags',
+      name: 'Tag',
+      component: Tag
     },
 
 

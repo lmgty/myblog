@@ -1,26 +1,58 @@
 <template>
-  <div>
-    <ul v-for="article in articleList">
-      <li @click="changeDetail(article.nid)"><router-link :to="{name:'detail',params:{id:article.nid}}">{{article.title}}</router-link></li>
-    </ul>
+
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-7">
+      <ul v-for="article in articleList">
+        <!--<li @click="changeDetail(article.nid)">-->
+        <li>
+          {{article.create_time}}:
+          <router-link :to="{name:'detail',params:{id:article.nid}}">{{article.title}}</router-link>
+          {{article.comment_count}}条评论
+          {{article.up_count}}顶
+          {{article.down_count}}踩
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-3">
+      <Tag></Tag>
+    </div>
   </div>
 
 </template>
 
 <script>
+  import Tag from '@/components/Tag'
   export default {
     name: "Article",
     data() {
       return {
-        articleList:[]
+        articleList: [
+          //        {
+//            "nid": 1,
+//            "title": "Prolog 语言入门教程",
+//            "create_time": "2019-06-10T04:39:20.019824Z",
+//            "comment_count": 0,
+//            "up_count": 0,
+//            "down_count": 0,
+//            "user": 1,
+//            "tags": [
+//                2
+//            ]
+//        },
+        ]
+
       }
     },
-    mounted:function () {
+    components:{
+      'Tag':Tag
+    },
+    mounted: function () {
       // vue页面刚加载时自动执行
       this.initArticle()
     },
-    methods:{
-      initArticle:function () {
+    methods: {
+      initArticle: function () {
         // 通过ajax向接口发送请求，并获取课程列表
         // axios 发送ajax请求
         // npm install axios --save
@@ -29,12 +61,12 @@
         var that = this;
 
         this.$axios.request({
-          url:this.$store.state.apiList.articles,
-          method:"GET"
+          url: this.$store.state.apiList.articles,
+          method: "GET"
         }).then(function (ret) {
           // ajax请求发送成功后，获取的响应内容
           console.log(ret.data);
-          if(ret.data.code === 1000){
+          if (ret.data.code === 1000) {
 
             that.articleList = ret.data.data
           }
@@ -43,7 +75,6 @@
         })
       },
       changeDetail(id){
-//        this.initDetail(id);
         this.$router.push({name: 'detail', params: {id: id}})
       }
     }
@@ -51,5 +82,7 @@
 </script>
 
 <style scoped>
+  .articleList {
+  }
 
 </style>
