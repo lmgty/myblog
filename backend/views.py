@@ -1,15 +1,15 @@
 from django.shortcuts import render, HttpResponse
 from django.views import View
+from rest_framework.viewsets import GenericViewSet, ViewSetMixin
 from rest_framework.response import Response
 from .models import *
-from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 from .serilizer import *
 from rest_framework.views import APIView
 
 
 # ArticleSerializers
-class ArticleView(APIView):
-    def get(self, request):
+class ArticleView(ViewSetMixin, APIView):
+    def list(self, request, *args, **kwargs):
         ret = {'code': 1000, 'data': None}
         try:
             article_list = Article.objects.all()
@@ -17,12 +17,24 @@ class ArticleView(APIView):
             ret['data'] = article_serializers.data
         except Exception as e:
             ret['code'] = 1001
-            ret['error'] = '获取课程失败'
+            ret['error'] = '获取文章失败'
         return Response(ret)
 
+    def retrieve(self, request, *args, **kwargs):
+        ret = {'code': 1000, 'data': None}
+        try:
+            pk = kwargs.get('pk')
+            article_title = Article.objects.filter(pk=pk).first().title
+            article_detail = ArticleDetail.objects.filter(pk=pk).first()
+            article_detail_serializers = ArticleDetailSerializers(article_detail)
+            ret['data'] = article_detail_serializers.data
+            ret['data']['title'] = article_title
+        except Exception as e:
+            ret['code'] = 1001
+            ret['error'] = '获取文章详情失败'
+        return Response(ret)
 
-
-#     def post(self, request):
+# def post(self, request):
 #         # 取数据
 #         # 原生request支持的操作
 #         # print("POST",request.POST)

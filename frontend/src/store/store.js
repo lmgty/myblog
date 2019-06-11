@@ -12,13 +12,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   // 组件中通过 this.$store.state.username 调用
   state: {
-    username: Cookie.get("username"),
-    token:Cookie.get("token"),
+    // username: Cookie.get("username"),
+    // token:Cookie.get("token"),
     apiList:{
-      course: 'http://127.0.0.1:8000/api/v1/course/',
-      courseDetail: 'http://127.0.0.1:8000/api/v1/course/',
-      auth: 'http://127.0.0.1:8000/api/v1/auth/',
-      micro: 'http://127.0.0.1:8000/api/v1/micro/'
+      articles: 'http://127.0.0.1:8000/api/articles/',
+      // courseDetail: 'http://127.0.0.1:8000/api/v1/course/',
+      // auth: 'http://127.0.0.1:8000/api/v1/auth/',
+      // micro: 'http://127.0.0.1:8000/api/v1/micro/'
     }
   },
   mutations: {

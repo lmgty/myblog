@@ -1,11 +1,13 @@
 <template>
 
-  <div>
-    <h3>Detail</h3>
-    <p>{{articleDetail.content}}</p>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <h1>{{articleDetail.title}}</h1>
+      <p v-html="articleDetail.content"></p>
+    </div>
   </div>
 
-  <!--<div>{{articleList}}</div>-->
 </template>
 
 <script>
@@ -15,6 +17,7 @@
       return {
         articleDetail:{
             nid:null,
+            title:null,
             content:'原始数据'
         }
       }
@@ -34,22 +37,17 @@
         var that = this
 
         this.$axios.request({
-          url:'http://127.0.0.1:8000/api/articles/detail/' + nid + '/',
+          url:this.$store.state.apiList.articles + nid + '/',
           method:"GET"
         }).then(function (ret) {
-          // ajax请求发送成功后，获取的响应内容
-          console.log(ret.data)
+            console.log(ret.data);
           if(ret.data.code === 1000){
-
             that.articleDetail = ret.data.data
+          }else {
+              alert(ret.data.error)
           }
-        }).catch(function (ret) {
-          // ajax请求失败之后，获取响应的内容
         })
-
-
-
-      }
+      },
     }
   }
 </script>

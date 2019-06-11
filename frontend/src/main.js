@@ -5,7 +5,6 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import store from './store/store.js'
-import $ from 'jquery'
 import bootstrap3 from '../node_modules/bootstrap3/dist/css/bootstrap.css'
 
 Vue.prototype.$axios = axios
@@ -16,6 +15,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
