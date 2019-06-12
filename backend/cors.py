@@ -30,6 +30,6 @@ class CORSMiddleware(MiddlewareMixin):
 
         if request.method == "OPTIONS":
             response['Access-Control-Allow-Headers'] = "Content-Type"
-            response['Access-Control-Allow-Methods'] = "PUT,DELETE"
+            response['Access-Control-Allow-Methods'] = "GET,PUT,DELETE"
 
         return response

@@ -1,8 +1,8 @@
 <template>
 <div>
   <ul v-for="tag in tagList">
-    <li>{{tag.title}}&nbsp({{tag.c}})</li>
-    <!-- <router-link :to="{name:'detail',params:{id:article.nid}}">{{article.title}}</router-link> -->
+    <!--<li>{{tag.title}}&nbsp{{tag.alias}}&nbsp({{tag.c}})</li>-->
+     <router-link :to="{name:'articletag',params:{tagalias:tag.alias}}">{{tag.title}}&nbsp({{tag.c}})</router-link>
   </ul>
 </div>
 </template>
@@ -13,10 +13,7 @@
     name: "Tags",
     data() {
       return {
-        tagList: [{
-          title: null,
-          c: null
-          }
+        tagList: [
         ]
       }
     },
@@ -33,7 +30,6 @@
           method: "GET"
         }).then(function (ret) {
           // ajax请求发送成功后，获取的响应内容
-          console.log(ret.data);
           if (ret.data.code === 1000) {
             that.tagList = ret.data.data
           }
@@ -41,6 +37,9 @@
           // ajax请求失败之后，获取响应的内容
         })
       },
+      changeDetail(id){
+        this.$router.push({name: 'detail', params: {id: id}})
+      }
     }
   }
 </script>

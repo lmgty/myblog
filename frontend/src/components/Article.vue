@@ -27,29 +27,41 @@
     name: "Article",
     data() {
       return {
-        articleList: [
-          //        {
-//            "nid": 1,
-//            "title": "Prolog 语言入门教程",
-//            "create_time": "2019-06-10T04:39:20.019824Z",
-//            "comment_count": 0,
-//            "up_count": 0,
-//            "down_count": 0,
-//            "user": 1,
-//            "tags": [
-//                2
-//            ]
-//        },
-        ]
+        articleList: []
 
       }
     },
-    components:{
-      'Tag':Tag
+    components: {
+      'Tag': Tag
     },
     mounted: function () {
       // vue页面刚加载时自动执行
       this.initArticle()
+    },
+    watch: {
+      //监听路由，只要路由有变化(路径，参数等变化)都有执行下面的函数，你可以
+      $route: {
+        handler: function (val, oldVal) {
+             this.initArticle()
+//          let _fullPath = this.$route.fullPath;
+//
+//          var that = this;
+//          this.$axios.request({
+//
+//            url: this.$store.state.apiList.base + _fullPath + '/',
+//            method: "GET"
+//          }).then(function (ret) {
+//            // ajax请求发送成功后，获取的响应内容
+//            if (ret.data.code === 1000) {
+//              that.articleList = ret.data.data
+//            }
+//          }).catch(function (ret) {
+//            // ajax请求失败之后，获取响应的内容
+//          })
+
+        },
+        deep: true
+      }
     },
     methods: {
       initArticle: function () {
@@ -59,30 +71,26 @@
         // 第一步：在main.js中配置
         // 第二步：使用axios发送请求
         var that = this;
+        let _fullPath = this.$route.fullPath;
 
         this.$axios.request({
-          url: this.$store.state.apiList.articles,
+//          url: this.$store.state.apiList.articles,
+          url: this.$store.state.apiList.base + _fullPath + '/',
           method: "GET"
         }).then(function (ret) {
           // ajax请求发送成功后，获取的响应内容
-          console.log(ret.data);
           if (ret.data.code === 1000) {
-
             that.articleList = ret.data.data
           }
         }).catch(function (ret) {
           // ajax请求失败之后，获取响应的内容
         })
       },
-      changeDetail(id){
-        this.$router.push({name: 'detail', params: {id: id}})
-      }
     }
   }
 </script>
 
 <style scoped>
-  .articleList {
-  }
+
 
 </style>

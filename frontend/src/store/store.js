@@ -15,7 +15,9 @@ export default new Vuex.Store({
     // username: Cookie.get("username"),
     // token:Cookie.get("token"),
     apiList:{
+      base: 'http://127.0.0.1:8000/api',
       articles: 'http://127.0.0.1:8000/api/articles/',
+      detail: 'http://127.0.0.1:8000/api/articles/detail/',
       tags: 'http://127.0.0.1:8000/api/tags/',
       // auth: 'http://127.0.0.1:8000/api/v1/auth/',
       // micro: 'http://127.0.0.1:8000/api/v1/micro/'

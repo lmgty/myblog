@@ -37,7 +37,7 @@
         var that = this
 
         this.$axios.request({
-          url:this.$store.state.apiList.articles + nid + '/',
+          url:this.$store.state.apiList.detail + nid + '/',
           method:"GET"
         }).then(function (ret) {
             console.log(ret.data);

@@ -39,6 +39,7 @@ class Tag(models.Model):
 
     nid = models.AutoField(primary_key=True)
     title = models.CharField(max_length=32, verbose_name="标签名称")
+    alias = models.CharField(max_length=32, null=True)
 
     def __str__(self):
         return self.title

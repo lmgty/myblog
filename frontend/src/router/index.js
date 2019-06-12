@@ -20,7 +20,7 @@ export default new Router({
       component: Article
     },
     {
-      path: '/articles/:id',
+      path: '/articles/detail/:id',
       name: 'detail',
       component: Detail
     },
@@ -29,7 +29,11 @@ export default new Router({
       name: 'Tag',
       component: Tag
     },
-
+    {
+      path: '/articles/:tagalias',
+      name: 'articletag',
+      component: Article
+    },
 
   ]
 })
