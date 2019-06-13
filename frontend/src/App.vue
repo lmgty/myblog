@@ -15,23 +15,16 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <!--{% if request.user.username %}-->
-                    <!--<li><a href="#">{{ request.user.username }}</a></li>-->
-                    <!--<li class="dropdown">-->
-                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"-->
-                           <!--aria-expanded="false">个人中心 <span class="caret"></span></a>-->
-                        <!--<ul class="dropdown-menu">-->
-                            <!--<li><a href="#">Action</a></li>-->
-                            <!--<li><a href="#">Another action</a></li>-->
-                            <!--<li><a href="#">Something else here</a></li>-->
-                            <!--<li role="separator" class="divider"></li>-->
-                            <!--<li><a href="/logout/">注销</a></li>-->
-                        <!--</ul>-->
-                    <!--</li>-->
-                <!--{% else %}-->
-                    <!--<li><a href="/login/">登录</a></li>-->
-                    <!--<li><a href="/reg/">注册</a></li>-->
-                <!--{% endif %}-->
+              <li class="navbar-brand" v-if="this.$store.state.token">
+                <a>{{this.$store.state.username}}</a>
+              </li>
+              <li class="navbar-brand" v-if="this.$store.state.token">
+                <a @click="logout">注销</a>
+              </li>
+
+              <li v-else>
+                <router-link to="/login">登录</router-link>
+              </li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -44,7 +37,12 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  methods:{
+      logout:function () {
+        this.$store.commit('clearToken')
+      }
+  }
 }
 </script>
 

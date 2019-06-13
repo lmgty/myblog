@@ -10,6 +10,8 @@ class UserInfo(models.Model):
     nid = models.AutoField(primary_key=True)
     username = models.CharField(max_length=32, verbose_name="用户名")
     create_time = models.DateTimeField(auto_now_add=True)
+    pwd = models.CharField(max_length=32)
+    token = models.CharField(max_length=64, null=True)
 
     # 一对一
     blog = models.OneToOneField(to="Blog", to_field="nid", null=True)

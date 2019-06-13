@@ -3,9 +3,9 @@
   <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-7">
-      <ul v-for="article in articleList">
+      <ul>
         <!--<li @click="changeDetail(article.nid)">-->
-        <li>
+        <li v-for="article in articleList">
           {{article.create_time}}:
           <router-link :to="{name:'detail',params:{id:article.nid}}">{{article.title}}</router-link>
           {{article.comment_count}}条评论

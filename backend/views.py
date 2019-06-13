@@ -8,7 +8,6 @@ from rest_framework.views import APIView
 from django.db.models import Sum, Count, Avg, Max
 
 
-# ArticleSerializers
 class ArticleView(ViewSetMixin, APIView):
     def list(self, request, *args, **kwargs):
         ret = {'code': 1000, 'data': None}
@@ -49,6 +48,7 @@ class TagView(ViewSetMixin, APIView):
             ret['error'] = '获取标签失败'
         return Response(ret)
 
+
 class TagArticleView(ViewSetMixin, APIView):
     def list(self, request, *args, **kwargs):
         ret = {'code': 1000, 'data': None}
@@ -69,3 +69,28 @@ class TagArticleView(ViewSetMixin, APIView):
             ret['error'] = '获取文章失败'
         return Response(ret)
 
+
+class CommentView(ViewSetMixin, APIView):
+    def list(self, request, *args, **kwargs):
+        ret = {'code': 1000, 'data': None}
+        return Response(ret)
+
+    def retrieve(self, request, *args, **kwargs):
+        ret = {'code': 1000, 'data': None}
+
+        try:
+            article_id = kwargs.get('pk')
+            comment_list = Comment.objects.filter(article_id=article_id).extra(
+                select={"create_time": "strftime('%%Y-%%m-%%d %%H:%%M:%%S',backend_comment.create_time)"}
+            ).values(
+                'nid', 'user_id', 'user__username',
+                'content', 'article_id','create_time',
+                'parent_comment__nid', 'parent_comment__content', 'parent_comment__user__username')
+            print(comment_list)
+
+            ret['data'] = comment_list
+        except Exception as e:
+            ret['code'] = 1001
+            ret['error'] = '获取评论失败'
+
+        return Response(ret)

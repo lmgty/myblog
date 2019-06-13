@@ -1,8 +1,10 @@
 <template>
 <div>
-  <ul v-for="tag in tagList">
+  <ul>
     <!--<li>{{tag.title}}&nbsp{{tag.alias}}&nbsp({{tag.c}})</li>-->
-     <router-link :to="{name:'articletag',params:{tagalias:tag.alias}}">{{tag.title}}&nbsp({{tag.c}})</router-link>
+    <li v-for="tag in tagList">
+      <router-link :to="{name:'articletag',params:{tagalias:tag.alias}}">{{tag.title}}&nbsp({{tag.c}})</router-link>
+    </li>
   </ul>
 </div>
 </template>

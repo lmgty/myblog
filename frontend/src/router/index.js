@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Article from '@/components/Article'
 import Detail from '@/components/Detail'
 import Tag from '@/components/Tag'
+import Login from '@/components/Login'
 
 Vue.use(Router)
 
@@ -33,6 +34,16 @@ export default new Router({
       path: '/articles/:tagalias',
       name: 'articletag',
       component: Article
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/comment',
+      name: 'comment',
+      component: Comment
     },
 
   ]

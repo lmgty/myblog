@@ -5,12 +5,15 @@
     <div class="col-md-8">
       <h1>{{articleDetail.title}}</h1>
       <p v-html="articleDetail.content"></p>
+      <Comment :message="articleDetail.nid"></Comment>
     </div>
   </div>
 
 </template>
 
 <script>
+    import Comment from '@/components/Comment'
+
   export default {
     name: "Detail",
     data() {
@@ -21,6 +24,9 @@
             content:'原始数据'
         }
       }
+    },
+    components: {
+      'Comment': Comment,
     },
     mounted:function () {
       // vue页面刚加载时自动执行
@@ -40,7 +46,7 @@
           url:this.$store.state.apiList.detail + nid + '/',
           method:"GET"
         }).then(function (ret) {
-            console.log(ret.data);
+//            console.log(ret.data);
           if(ret.data.code === 1000){
             that.articleDetail = ret.data.data
           }else {
