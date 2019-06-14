@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse
 from django.views import View
 from rest_framework.viewsets import GenericViewSet, ViewSetMixin
 from rest_framework.response import Response
+from django.db.models import F
 from . import models
 from .serilizer import *
 from rest_framework.views import APIView
@@ -86,11 +87,43 @@ class CommentView(ViewSetMixin, APIView):
                 'nid', 'user_id', 'user__username',
                 'content', 'article_id','create_time',
                 'parent_comment__nid', 'parent_comment__content', 'parent_comment__user__username')
-            print(comment_list)
+            # print(comment_list)
 
             ret['data'] = comment_list
         except Exception as e:
             ret['code'] = 1001
             ret['error'] = '获取评论失败'
+
+        return Response(ret)
+
+    def create(self, request, *args, **kwargs):
+
+        ret = {'code': 1000}
+        try:
+            content = request.data.get('content')
+            article_id = request.data.get('article_id')
+            user_id = request.data.get('user_id')
+            parent_comment__nid = request.data.get('parent_comment__nid')
+
+            if not parent_comment__nid:
+                comment_obj = Comment.objects.create(article_id=article_id, user_id=user_id, content=content)
+            else:
+                comment_obj = Comment.objects.create(article_id=article_id, user_id=user_id, content=content,
+                                                            parent_comment_id=parent_comment__nid)
+            article_obj = Article.objects.filter(pk=article_id).first()
+            article_obj.comment_count = F('comment_count') + 1
+            article_obj.save()
+            comment_list = Comment.objects.filter(nid=comment_obj.nid).extra(
+                select={"create_time": "strftime('%%Y-%%m-%%d %%H:%%M:%%S',backend_comment.create_time)"}
+            ).values(
+                'nid', 'user_id', 'user__username',
+                'content', 'article_id', 'create_time',
+                'parent_comment__nid', 'parent_comment__content', 'parent_comment__user__username')
+            # print(comment_list)
+
+            ret['data'] = comment_list
+        except Exception as e:
+            ret['code'] = 1001
+            ret['error'] = '提交评论失败'
 
         return Response(ret)

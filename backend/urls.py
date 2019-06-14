@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^api/articles/(?P<tag>[a-zA-Z]+)/$', views.TagArticleView.as_view({'get': 'retrieve'}), name="tag_article"),
     url(r'^api/auth/$', auth.UserInfoView.as_view(), name="auth"),
     url(r'^api/articles/detail/(?P<pk>\d+)/comment/$', views.CommentView.as_view({'get': 'retrieve'}), name="comment"),
+    url(r'^api/comment/$', views.CommentView.as_view({'post': 'create'}), name="create_comment"),
 
 ]

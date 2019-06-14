@@ -17,6 +17,8 @@ class UserInfoView(APIView):
         else:
             uid = str(uuid.uuid4())
             models.UserInfo.objects.update_or_create(username=username, defaults={'token': uid})
+            user_id = models.UserInfo.objects.filter(username=username, pwd=pwd).first().nid
             ret['token'] = uid
+            ret['user_id'] = user_id
 
         return Response(ret)
