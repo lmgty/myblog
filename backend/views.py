@@ -85,7 +85,7 @@ class CommentView(ViewSetMixin, APIView):
                 select={"create_time": "strftime('%%Y-%%m-%%d %%H:%%M:%%S',backend_comment.create_time)"}
             ).values(
                 'nid', 'user_id', 'user__username',
-                'content', 'article_id','create_time',
+                'content', 'article_id', 'create_time',
                 'parent_comment__nid', 'parent_comment__content', 'parent_comment__user__username')
             # print(comment_list)
 
@@ -109,7 +109,7 @@ class CommentView(ViewSetMixin, APIView):
                 comment_obj = Comment.objects.create(article_id=article_id, user_id=user_id, content=content)
             else:
                 comment_obj = Comment.objects.create(article_id=article_id, user_id=user_id, content=content,
-                                                            parent_comment_id=parent_comment__nid)
+                                                     parent_comment_id=parent_comment__nid)
             article_obj = Article.objects.filter(pk=article_id).first()
             article_obj.comment_count = F('comment_count') + 1
             article_obj.save()
@@ -126,4 +126,48 @@ class CommentView(ViewSetMixin, APIView):
             ret['code'] = 1001
             ret['error'] = '提交评论失败'
 
+        return Response(ret)
+
+
+class ArticleUpDownView(ViewSetMixin, APIView):
+    def list(self, request, *args, **kwargs):
+        ret = {'code': 1000, 'data': None}
+        try:
+            article_id = kwargs.get('pk')
+            article_obj = Article.objects.filter(pk=article_id).first()
+
+            ret['data'] = {'up_count': article_obj.up_count,
+                           'down_count': article_obj.down_count,
+                           'article_id': article_id}
+        except Exception as e:
+            ret['code'] = 1001
+            ret['error'] = '获取顶踩失败'
+        return Response(ret)
+
+    def create(self, request, *args, **kwargs):
+
+        ret = {'code': 1000, 'data': None}
+        try:
+            is_up = request.data.get('is_up')
+            article_id = request.data.get('article_id')
+            user_id = request.data.get('user_id')
+            up_down_obj = ArticleUpDown.objects.filter(user=user_id, article_id=article_id).first()
+            if not up_down_obj:
+                article_updown_obj = ArticleUpDown.objects.create(user_id=user_id, article_id=article_id,is_up=is_up)
+                article_obj = Article.objects.filter(pk=article_id).first()
+                if is_up:
+                    article_obj.up_count = F('up_count') + 1
+                else:
+                    article_obj.down_count = F('down_count') + 1
+                article_obj.save()
+                article_updown_serializers = ArticleUpDownSerializers(article_updown_obj)
+                ret['data'] = article_updown_serializers.data
+            else:
+                print(up_down_obj.is_up)
+                ret['code'] = 1002
+                ret['data'] = {'is_up':up_down_obj.is_up}
+
+        except Exception as e:
+            ret['code'] = 1001
+            ret['error'] = '获取顶踩失败'
         return Response(ret)

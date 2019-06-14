@@ -5,7 +5,9 @@
     <div class="col-md-8">
       <h1>{{articleDetail.title}}</h1>
       <p v-html="articleDetail.content"></p>
+      <UpDown></UpDown>
       <Comment :message="articleDetail.nid"></Comment>
+
     </div>
   </div>
 
@@ -13,6 +15,7 @@
 
 <script>
     import Comment from '@/components/Comment'
+    import UpDown from '@/components/UpDown'
 
   export default {
     name: "Detail",
@@ -27,6 +30,7 @@
     },
     components: {
       'Comment': Comment,
+      'UpDown': UpDown,
     },
     mounted:function () {
       // vue页面刚加载时自动执行

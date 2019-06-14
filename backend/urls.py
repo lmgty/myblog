@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^api/auth/$', auth.UserInfoView.as_view(), name="auth"),
     url(r'^api/articles/detail/(?P<pk>\d+)/comment/$', views.CommentView.as_view({'get': 'retrieve'}), name="comment"),
     url(r'^api/comment/$', views.CommentView.as_view({'post': 'create'}), name="create_comment"),
+    url(r'^api/articles/detail/(?P<pk>\d+)/updown/$', views.ArticleUpDownView.as_view({'get': 'list', 'post':'create'}), name="updowm"),
 
 ]

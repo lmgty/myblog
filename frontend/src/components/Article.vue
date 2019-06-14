@@ -43,22 +43,6 @@
       $route: {
         handler: function (val, oldVal) {
              this.initArticle()
-//          let _fullPath = this.$route.fullPath;
-//
-//          var that = this;
-//          this.$axios.request({
-//
-//            url: this.$store.state.apiList.base + _fullPath + '/',
-//            method: "GET"
-//          }).then(function (ret) {
-//            // ajax请求发送成功后，获取的响应内容
-//            if (ret.data.code === 1000) {
-//              that.articleList = ret.data.data
-//            }
-//          }).catch(function (ret) {
-//            // ajax请求失败之后，获取响应的内容
-//          })
-
         },
         deep: true
       }
