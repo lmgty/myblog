@@ -6,7 +6,12 @@ from django.db.models import F
 from . import models
 from .serilizer import *
 from rest_framework.views import APIView
-from django.db.models import Sum, Count, Avg, Max
+from django.db.models import Count
+import logging
+
+
+logger = logging.getLogger('django')
+
 
 
 class ArticleView(ViewSetMixin, APIView):
@@ -19,6 +24,7 @@ class ArticleView(ViewSetMixin, APIView):
             article_serializers = ArticleSerializers(article_list, many=True)
             ret['data'] = article_serializers.data
         except Exception as e:
+            logger.error(str(e))
             ret['code'] = 1001
             ret['error'] = '获取文章失败'
         return Response(ret)
@@ -33,6 +39,8 @@ class ArticleView(ViewSetMixin, APIView):
             ret['data'] = article_detail_serializers.data
             ret['data']['title'] = article_title
         except Exception as e:
+            logger.error(str(e))
+
             ret['code'] = 1001
             ret['error'] = '获取文章详情失败'
         return Response(ret)
@@ -45,6 +53,8 @@ class TagView(ViewSetMixin, APIView):
             tag_list = Tag.objects.all().annotate(c=Count("article__title")).values("title", "c", "alias")
             ret['data'] = tag_list
         except Exception as e:
+            logger.error(str(e))
+
             ret['code'] = 1001
             ret['error'] = '获取标签失败'
         return Response(ret)
@@ -66,6 +76,8 @@ class TagArticleView(ViewSetMixin, APIView):
             ret['data'] = article_serializers.data
 
         except Exception as e:
+            logger.error(str(e))
+
             ret['code'] = 1001
             ret['error'] = '获取文章失败'
         return Response(ret)
@@ -91,6 +103,8 @@ class CommentView(ViewSetMixin, APIView):
 
             ret['data'] = comment_list
         except Exception as e:
+            logger.error(str(e))
+
             ret['code'] = 1001
             ret['error'] = '获取评论失败'
 
@@ -110,9 +124,12 @@ class CommentView(ViewSetMixin, APIView):
             else:
                 comment_obj = Comment.objects.create(article_id=article_id, user_id=user_id, content=content,
                                                      parent_comment_id=parent_comment__nid)
+            logger.info('在Comment表中增加了一条数据')
             article_obj = Article.objects.filter(pk=article_id).first()
             article_obj.comment_count = F('comment_count') + 1
             article_obj.save()
+            logger.info('在文章表中中更新了ID为：{} 的评论数'.format(article_id))
+
             comment_list = Comment.objects.filter(nid=comment_obj.nid).extra(
                 select={"create_time": "strftime('%%Y-%%m-%%d %%H:%%M:%%S',backend_comment.create_time)"}
             ).values(
@@ -123,6 +140,8 @@ class CommentView(ViewSetMixin, APIView):
 
             ret['data'] = comment_list
         except Exception as e:
+            logger.error(str(e))
+
             ret['code'] = 1001
             ret['error'] = '提交评论失败'
 
@@ -140,6 +159,8 @@ class ArticleUpDownView(ViewSetMixin, APIView):
                            'down_count': article_obj.down_count,
                            'article_id': article_id}
         except Exception as e:
+            logger.error(str(e))
+
             ret['code'] = 1001
             ret['error'] = '获取顶踩失败'
         return Response(ret)
@@ -154,20 +175,27 @@ class ArticleUpDownView(ViewSetMixin, APIView):
             up_down_obj = ArticleUpDown.objects.filter(user=user_id, article_id=article_id).first()
             if not up_down_obj:
                 article_updown_obj = ArticleUpDown.objects.create(user_id=user_id, article_id=article_id,is_up=is_up)
+                logger.info('在ArticleUpDown表中增加了一条数据')
+
                 article_obj = Article.objects.filter(pk=article_id).first()
                 if is_up:
                     article_obj.up_count = F('up_count') + 1
                 else:
                     article_obj.down_count = F('down_count') + 1
                 article_obj.save()
+                logger.info('在文章表中中更新了ID为：{} 的顶、踩数'.format(article_id))
+
                 article_updown_serializers = ArticleUpDownSerializers(article_updown_obj)
                 ret['data'] = article_updown_serializers.data
+
             else:
                 print(up_down_obj.is_up)
                 ret['code'] = 1002
                 ret['data'] = {'is_up':up_down_obj.is_up}
 
         except Exception as e:
+            logger.error(str(e))
+
             ret['code'] = 1001
             ret['error'] = '获取顶踩失败'
         return Response(ret)

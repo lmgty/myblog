@@ -4,11 +4,6 @@
     <h1>评论区</h1>
     <h1 ref="article_id" style="display: none">{{message}}</h1>
 
-    <p>评论树</p>
-    <div class="comment_tree">
-
-    </div>
-    <p>评论列表</p>
     <ul class="comment_list" ref="comment_list">
 
       <li class="list-group-item" v-for="(comment, index) in commentList">
