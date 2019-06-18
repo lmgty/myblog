@@ -13,17 +13,17 @@ export default new Vuex.Store({
   // 组件中通过 this.$store.state.username 调用
   state: {
     username: Cookie.get("username"),
-    token:Cookie.get("token"),
-    user_id:Cookie.get("user_id"),
-    apiList:{
-      base: 'http://127.0.0.1:8000/api',
-      articles: 'http://127.0.0.1:8000/api/articles/',
-      detail: 'http://127.0.0.1:8000/api/articles/detail/',
-      tags: 'http://127.0.0.1:8000/api/tags/',
-      auth: 'http://127.0.0.1:8000/api/auth/',
-      comment: 'http://127.0.0.1:8000/api/comment/'
-    }
-  },
+    token: Cookie.get("token"),
+    user_id: Cookie.get("user_id"),
+      apiList:{
+        base: 'http://127.0.0.1:8000/api',
+        articles: 'http://127.0.0.1:8000/api/articles/',
+        detail: 'http://127.0.0.1:8000/api/articles/detail/',
+        tags: 'http://127.0.0.1:8000/api/tags/',
+        auth: 'http://127.0.0.1:8000/api/auth/',
+        comment: 'http://127.0.0.1:8000/api/comment/'
+      }
+    },
   mutations: {
     // 组件中通过 this.$store.commit(saveToken,参数)  调用
     saveToken: function (state, userToken) {

@@ -6,7 +6,7 @@
       <h1>{{articleDetail.title}}</h1>
       <p v-html="articleDetail.content"></p>
       <UpDown></UpDown>
-      <Comment :message="articleDetail.nid"></Comment>
+      <Comment :message="articleDetail.article"></Comment>
 
     </div>
   </div>
@@ -24,7 +24,8 @@
         articleDetail:{
             nid:null,
             title:null,
-            content:'原始数据'
+            content:'',
+            article:null,
         }
       }
     },
@@ -45,7 +46,6 @@
         // 第一步：在main.js中配置
         // 第二步：使用axios发送请求
         var that = this
-
         this.$axios.request({
           url:this.$store.state.apiList.detail + nid + '/',
           method:"GET"
@@ -53,6 +53,7 @@
 //            console.log(ret.data);
           if(ret.data.code === 1000){
             that.articleDetail = ret.data.data
+            console.log(that.articleDetail.article)
           }else {
               alert(ret.data.error)
           }

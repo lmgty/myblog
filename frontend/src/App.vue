@@ -31,7 +31,7 @@
       </div><!-- /.container-fluid -->
     </nav>
 
-    <router-view class="clearfi"></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -48,7 +48,7 @@
 
 <style>
   body {
-    background: #f5f4d6;
+    background: #f5f4d6!important;
   }
 
   .my-navbar {
@@ -56,8 +56,4 @@
     width: 100%;
     z-index: 888;
   }
-  .clearfi{
-    margin-bottom: 100px;
-  }
-
 </style>
