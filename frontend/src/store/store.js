@@ -22,6 +22,14 @@ export default new Vuex.Store({
         auth: 'http://127.0.0.1:8000/api/auth/',
         comment: 'http://127.0.0.1:8000/api/comment/'
       }
+    // apiList:{
+    //     base: 'http://123.207.107.211/api',
+    //     articles: 'http://123.207.107.211/api/articles/',
+    //     detail: 'http://123.207.107.211/api/articles/detail/',
+    //     tags: 'http://123.207.107.211/api/tags/',
+    //     auth: 'http://123.207.107.211/api/auth/',
+    //     comment: 'http://123.207.107.211/api/comment/'
+    //   }
     },
   mutations: {
     // 组件中通过 this.$store.commit(saveToken,参数)  调用
