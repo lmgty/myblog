@@ -9,9 +9,7 @@ from rest_framework.views import APIView
 from django.db.models import Count
 import logging
 
-
 logger = logging.getLogger('django')
-
 
 
 class ArticleView(ViewSetMixin, APIView):
@@ -34,7 +32,7 @@ class ArticleView(ViewSetMixin, APIView):
         try:
             pk = kwargs.get('pk')
             article_title = Article.objects.filter(pk=pk).first().title
-            article_detail = ArticleDetail.objects.filter(pk=pk).first()
+            article_detail = ArticleDetail.objects.filter(article=pk).first()
             article_detail_serializers = ArticleDetailSerializers(article_detail)
             ret['data'] = article_detail_serializers.data
             ret['data']['title'] = article_title
@@ -99,7 +97,6 @@ class CommentView(ViewSetMixin, APIView):
                 'nid', 'user_id', 'user__username',
                 'content', 'article_id', 'create_time',
                 'parent_comment__nid', 'parent_comment__content', 'parent_comment__user__username')
-            # print(comment_list)
 
             ret['data'] = comment_list
         except Exception as e:
@@ -136,7 +133,6 @@ class CommentView(ViewSetMixin, APIView):
                 'nid', 'user_id', 'user__username',
                 'content', 'article_id', 'create_time',
                 'parent_comment__nid', 'parent_comment__content', 'parent_comment__user__username')
-            # print(comment_list)
 
             ret['data'] = comment_list
         except Exception as e:
@@ -174,7 +170,7 @@ class ArticleUpDownView(ViewSetMixin, APIView):
             user_id = request.data.get('user_id')
             up_down_obj = ArticleUpDown.objects.filter(user=user_id, article_id=article_id).first()
             if not up_down_obj:
-                article_updown_obj = ArticleUpDown.objects.create(user_id=user_id, article_id=article_id,is_up=is_up)
+                article_updown_obj = ArticleUpDown.objects.create(user_id=user_id, article_id=article_id, is_up=is_up)
                 logger.info('在ArticleUpDown表中增加了一条数据')
 
                 article_obj = Article.objects.filter(pk=article_id).first()
@@ -189,9 +185,8 @@ class ArticleUpDownView(ViewSetMixin, APIView):
                 ret['data'] = article_updown_serializers.data
 
             else:
-                print(up_down_obj.is_up)
                 ret['code'] = 1002
-                ret['data'] = {'is_up':up_down_obj.is_up}
+                ret['data'] = {'is_up': up_down_obj.is_up}
 
         except Exception as e:
             logger.error(str(e))

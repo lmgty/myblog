@@ -9,7 +9,11 @@ class UserConfig(admin.ModelAdmin):
 
 
 class ArticleConfig(admin.ModelAdmin):
-    list_display = ["title", "user"]
+    list_display = ["nid","title", "user"]
+
+
+class ArticleDetailConfig(admin.ModelAdmin):
+    list_display = ['nid', 'article']
 
 
 class Article2TagConfig(admin.ModelAdmin):
@@ -22,5 +26,5 @@ admin.site.register(models.Blog)
 admin.site.register(models.Tag)
 admin.site.register(models.Comment)
 admin.site.register(models.ArticleUpDown)
-admin.site.register(models.ArticleDetail)
+admin.site.register(models.ArticleDetail, ArticleDetailConfig)
 admin.site.register(models.Article2Tag, Article2TagConfig)

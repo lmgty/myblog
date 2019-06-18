@@ -6,7 +6,7 @@ import Detail from '@/components/Detail'
 import Tag from '@/components/Tag'
 import Login from '@/components/Login'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [

@@ -7,10 +7,9 @@ import Cookie from 'vue-cookies'
 // 2。在main中引入
 // 3。main里面放入Vue实例化
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
-  // 组件中通过 this.$store.state.username 调用
   state: {
     username: Cookie.get("username"),
     token: Cookie.get("token"),
@@ -30,19 +29,18 @@ export default new Vuex.Store({
       state.username = userToken.username;
       state.token = userToken.token;
       state.user_id = userToken.user_id;
-      Cookie.set("username", userToken.username, "1d")
-      Cookie.set("token", userToken.token, "1d")
-      Cookie.set("user_id", userToken.user_id, "1d")
+      Cookie.set("username", userToken.username, "1d");
+      Cookie.set("token", userToken.token, "1d");
+      Cookie.set("user_id", userToken.user_id, "1d");
 
     },
     clearToken: function (state) {
-      state.username = null
-      state.token = null
-      state.user_id = null
-      Cookie.remove('username')
-      Cookie.remove('token')
-      Cookie.remove('user_id')
-
+      state.username = null;
+      state.token = null;
+      state.user_id = null;
+      Cookie.remove('username');
+      Cookie.remove('token');
+      Cookie.remove('user_id');
     }
   }
 })

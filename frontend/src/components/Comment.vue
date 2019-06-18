@@ -8,7 +8,7 @@
 
       <li class="list-group-item" v-for="(comment, index) in commentList">
         <div>
-          <a href="">#{{ index }}</a> &nbsp;&nbsp;
+          <a href="">#{{ index+1 }}</a> &nbsp;&nbsp;
           <span style="color: gray;">{{ comment.create_time }}</span>
           <a href=""><span>{{ comment.user__username }}</span></a>
           <a class="pull-right reply_btn" @click="changeParrent(comment.nid)"><span>回复</span></a>
@@ -40,7 +40,7 @@
 
     </div>
     <div v-else>
-      <router-link to="/login">登录</router-link>
+      <router-link to="/login">登录后评论</router-link>
     </div>
 
   </div>
@@ -72,33 +72,30 @@
       }
     },
     mounted: function () {
-      // vue页面刚加载时自动执行
       this.initComment()
     },
     methods: {
       initComment: function () {
-        var that = this;
-        var _fullPath = this.$route.fullPath
+        let that = this;
+        let _fullPath = this.$route.fullPath;
 
         this.$axios.request({
           url: this.$store.state.apiList.base + _fullPath + '/' + 'comment' + '/',
           method: "GET"
         }).then(function (ret) {
-          // ajax请求发送成功后，获取的响应内容
           if (ret.data.code === 1000) {
             that.commentList = ret.data.data
 //            console.log(that.commentList)
           }
         }).catch(function (ret) {
-          // ajax请求失败之后，获取响应的内容
           console.log(222)
         })
       },
       putComment: function () {
-        var comment = this.$refs.comment_content.value;
-        var article_id = this.$refs.article_id.innerText;
-        var user_id = this.$store.state.user_id;
-        var that = this
+        let comment = this.$refs.comment_content.value;
+        let article_id = this.$refs.article_id.innerText;
+        let user_id = this.$store.state.user_id;
+        let that = this;
 
         this.$axios.request({
           url: this.$store.state.apiList.comment,
@@ -113,23 +110,20 @@
             'Content-Type': 'application/json',
           }
         }).then(function (ret) {
-          // ajax请求发送成功后，获取的响应内容
           if (ret.data.code === 1000) {
             that.replay.parent_comment__nid = null;
             that.$refs.comment_content.value = '';
-            console.log(ret.data.data[0])
             that.commentList.push(ret.data.data[0])
           } else {
             alert(ret.data.error)
           }
         }).catch(function (ret) {
-          // ajax请求失败之后，获取响应的内容
         })
       },
       changeParrent(id){
-        this.replay.parent_comment__nid = id
-        console.log(this.replay.parent_comment__nid)
-        this.$refs.comment_content.focus()
+        this.replay.parent_comment__nid = id;
+        console.log(this.replay.parent_comment__nid);
+        this.$refs.comment_content.focus();
       }
     }
   }

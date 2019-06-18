@@ -105,5 +105,17 @@ venv.bak/
 
 # PyCharm
 # http://www.jetbrains.com/pycharm/webhelp/project.html
-.idea
+*.pyc
+.idea/
 .iml
+admin/
+static/img/
+myblog/prod.py
+static/favicon.ico
+static/js/manifest.2ae2e69a05c33dfc65f8.js.map
+static/rest_framework/css/bootstrap-theme.min.css
+static/rest_framework/fonts/fontawesome-webfont.woff
+static/rest_framework/fonts/glyphicons-halflings-regular.ttf
+static/rest_framework/img/glyphicons-halflings.png
+static/rest_framework/img/grid.png
+

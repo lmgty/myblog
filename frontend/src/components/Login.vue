@@ -28,7 +28,7 @@
     },
     methods: {
       doLogin: function () {
-        var that = this
+        let that = this;
 
         this.$axios.request({
           url: this.$store.state.apiList.auth,
@@ -41,8 +41,6 @@
             'Content-Type': 'application/json',
           }
         }).then(function (ret) {
-//          console.log(ret)
-          // ajax请求发送成功后，获取的响应内容
           if (ret.data.code === 1000) {
             that.$store.commit('saveToken', {token: ret.data.token, username: that.username, user_id:ret.data.user_id})
             that.$router.back()

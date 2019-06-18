@@ -29,19 +29,17 @@
       }
     },
     mounted: function () {
-      // vue页面刚加载时自动执行
       this.initComment()
     },
     methods: {
       initComment: function () {
-        var that = this;
-        var _fullPath = this.$route.fullPath;
+        let that = this;
+        let _fullPath = this.$route.fullPath;
 
         this.$axios.request({
           url: this.$store.state.apiList.base + _fullPath + '/updown/',
           method: "GET"
         }).then(function (ret) {
-          // ajax请求发送成功后，获取的响应内容
           if (ret.data.code === 1000) {
             that.upAndDowm = ret.data.data
           }
@@ -49,12 +47,11 @@
           // ajax请求失败之后，获取响应的内容
         })
       },
-
       upOrDown(is_up){
         if (this.$store.state.user_id) {
           console.log(is_up);
-          var that = this;
-          var _fullPath = this.$route.fullPath;
+          let that = this;
+          let _fullPath = this.$route.fullPath;
 
           this.$axios.request({
             url: this.$store.state.apiList.base + _fullPath + '/updown/',
@@ -66,7 +63,6 @@
             }
           }).then(function (ret) {
             console.log(ret.data);
-            // ajax请求发送成功后，获取的响应内容
             if (ret.data.code === 1000) {
               if (ret.data.data.is_up) {
                 that.upAndDowm.up_count++;
