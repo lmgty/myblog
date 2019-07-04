@@ -53,9 +53,7 @@
           url: this.$store.state.apiList.base + _fullPath + '/',
           method: "GET"
         }).then(function (ret) {
-          if (ret.data.code === 1000) {
-            that.articleList = ret.data.data
-          }
+            that.articleList = ret.data
         }).catch(function (ret) {
         })
       },

@@ -29,9 +29,7 @@
           url: this.$store.state.apiList.tags,
           method: "GET"
         }).then(function (ret) {
-          if (ret.data.code === 1000) {
-            that.tagList = ret.data.data
-          }
+            that.tagList = ret.data
         }).catch(function (ret) {
           // ajax请求失败之后，获取响应的内容
         })

@@ -1,67 +1,43 @@
-from django.shortcuts import render, HttpResponse
-from django.views import View
-from rest_framework.viewsets import GenericViewSet, ViewSetMixin
+from rest_framework.viewsets import ViewSetMixin
 from rest_framework.response import Response
 from django.db.models import F
-from . import models
 from .serilizer import *
 from rest_framework.views import APIView
 from django.db.models import Count
+from rest_framework import generics
 import logging
 
 logger = logging.getLogger('django')
 
 
-class ArticleView(ViewSetMixin, APIView):
-    def list(self, request, *args, **kwargs):
-        ret = {'code': 1000, 'data': None}
-        try:
-            article_list = Article.objects.all().extra(
-                select={"create_time": "strftime('%%Y-%%m-%%d',create_time)"}
-            )
-            article_serializers = ArticleSerializers(article_list, many=True)
-            ret['data'] = article_serializers.data
-        except Exception as e:
-            logger.error(str(e))
-            ret['code'] = 1001
-            ret['error'] = '获取文章失败'
-        return Response(ret)
+class ArticleView(generics.ListAPIView):
+    ret = {'code': 1000, 'data': None}
+    queryset = Article.objects.all().extra(
+        select={"create_time": "strftime('%%Y-%%m-%%d',create_time)"}
+    )
+    serializer_class = ArticleSerializers
+
+
+class ArticleDetailView(generics.RetrieveAPIView):
+    queryset = ArticleDetail.objects.all()
+    serializer_class = ArticleDetailSerializers
+    lookup_field = 'article_id'
 
     def retrieve(self, request, *args, **kwargs):
-        ret = {'code': 1000, 'data': None}
-        try:
-            pk = kwargs.get('pk')
-            article_title = Article.objects.filter(pk=pk).first().title
-            article_detail = ArticleDetail.objects.filter(article=pk).first()
-            article_detail_serializers = ArticleDetailSerializers(article_detail)
-            ret['data'] = article_detail_serializers.data
-            ret['data']['title'] = article_title
-        except Exception as e:
-            logger.error(str(e))
-
-            ret['code'] = 1001
-            ret['error'] = '获取文章详情失败'
-        return Response(ret)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        article_title = Article.objects.filter(pk=kwargs[self.lookup_field]).first().title
+        serializer_data = serializer.data
+        serializer_data['title'] = article_title
+        return Response(serializer_data)
 
 
-class TagView(ViewSetMixin, APIView):
-    def list(self, request, *args, **kwargs):
-        ret = {'code': 1000, 'data': None}
-        try:
-            tag_list = Tag.objects.all().annotate(c=Count("article__title")).values("title", "c", "alias")
-            ret['data'] = tag_list
-        except Exception as e:
-            logger.error(str(e))
-
-            ret['code'] = 1001
-            ret['error'] = '获取标签失败'
-        return Response(ret)
+class TagView(generics.ListAPIView):
+    queryset = Tag.objects.all().annotate(c=Count("article__title")).values("title", "c", "alias")
+    serializer_class = TagSerializers
 
 
 class TagArticleView(ViewSetMixin, APIView):
-    def list(self, request, *args, **kwargs):
-        ret = {'code': 1000, 'data': None}
-        return Response(ret)
 
     def retrieve(self, request, *args, **kwargs):
         ret = {'code': 1000, 'data': None}

@@ -1,5 +1,3 @@
-# by luffycity.com
-
 from rest_framework import serializers
 from .models import *
 
@@ -17,6 +15,8 @@ class BlogSerializers(serializers.ModelSerializer):
 
 
 class TagSerializers(serializers.ModelSerializer):
+    c = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Tag
         fields = "__all__"
@@ -50,5 +50,3 @@ class CommentSerializers(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = "__all__"
-
-

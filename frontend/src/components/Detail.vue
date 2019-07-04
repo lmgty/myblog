@@ -43,11 +43,7 @@
           url:this.$store.state.apiList.detail + nid + '/',
           method:"GET"
         }).then(function (ret) {
-          if(ret.data.code === 1000){
-            that.articleDetail = ret.data.data;
-          }else {
-              alert(ret.data.error)
-          }
+            that.articleDetail = ret.data;
         })
       },
     }
