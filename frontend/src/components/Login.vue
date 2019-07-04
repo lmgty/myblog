@@ -18,8 +18,8 @@
   export default {
     data() {
       return {
-        username: '',
-        password: '',
+        username: 'asdf',
+        password: 'asdf',
         user_id:null
       }
     },
